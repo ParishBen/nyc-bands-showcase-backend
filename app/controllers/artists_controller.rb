@@ -19,7 +19,7 @@ class ArtistsController < ApplicationController
     end
 
     def destroy
-        artist = Artist.find_by(name: params[:id])
+        artist = Artist.find_by(artist_id: params[:id])
         if artist
             artist.destroy
         end
@@ -27,6 +27,6 @@ class ArtistsController < ApplicationController
 
         private
         def artist_params
-            params.require(:artist).permit(:name, :id)
+            params.require(:artist).permit(:name, :artist_id)
         end
 end

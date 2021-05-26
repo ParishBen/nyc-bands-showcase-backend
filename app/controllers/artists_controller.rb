@@ -5,7 +5,7 @@ class ArtistsController < ApplicationController
         @user = User.find_by(name: params[:username])
         @artist.user_id = @user.id                                                             
         
-         if !Artist.all.find_by(name: params[:name])
+         if !@user.artists.all.find_by(artist_id: params[:id])
             @artist.save                                                           
             render json: @artist.to_json  
         else

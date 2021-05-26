@@ -10,13 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_06_195813) do
+ActiveRecord::Schema.define(version: 2021_03_25_035301) do
 
   create_table "artists", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "artist_id"
+    t.integer "user_id"
+  end
+
+  create_table "artists_users", id: false, force: :cascade do |t|
+    t.integer "artist_id", null: false
+    t.integer "user_id", null: false
+    t.index ["artist_id", "user_id"], name: "index_artists_users_on_artist_id_and_user_id"
+    t.index ["user_id", "artist_id"], name: "index_artists_users_on_user_id_and_artist_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

@@ -1,17 +1,25 @@
 class ArtistsController < ApplicationController
-
-    
-    def create
-        artist = Artist.new(artist_params)
-        if !Artist.all.find_by(name: params[:name])
-         artist.save
-         render json: artist.to_json  
-          
+ 
+    def create             #Taking in Artist params & saving if Artist not in DB.                          
+        @artist = Artist.new(artist_params)
+        @user = User.find_by(name: params[:username])
+        @artist.user_id = @user.id                                                             
+        
+         if !Artist.all.find_by(name: params[:name])
+            @artist.save                                                           
+            render json: @artist.to_json  
+        else
+            resp = {
+            error: "#{@artist.name} is Already a Fave!",
+            details: @artist.errors.full_messages
+            }
+          render json: resp, status: :unauthorized
+        end      
       end
-    end
-
+    
     def index
-          render json: Artist.all.to_json         
+        user = User.find_by(name: params[:name])
+        render json: user.artists.all.to_json        
     end
     
     def new
@@ -19,14 +27,16 @@ class ArtistsController < ApplicationController
     end
 
     def destroy
-        artist = Artist.find_by(artist_id: params[:id])
-        if artist
-            artist.destroy
+        @user = User.find_by(name: params[:name]) 
+        @artist = @user.artists.find_by(artist_id: params[:id])
+               
+        if @artist
+            @artist.destroy
         end
     end
 
         private
         def artist_params
-            params.require(:artist).permit(:name, :artist_id)
+            params.require(:artist).permit(:name, :artist_id, :user_id, :username)
         end
 end

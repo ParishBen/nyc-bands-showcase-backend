@@ -2,7 +2,7 @@ class User < ApplicationRecord
     has_secure_password
     validates :email, :name, presence: true
     validates :email, uniqueness: true
-    has_and_belongs_to_many :artists
+    has_many :artists
     def current_user
         User.find_by(id: session[:user_id])
     end

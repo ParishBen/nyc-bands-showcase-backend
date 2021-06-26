@@ -1,8 +1,10 @@
 class SessionsController < ApplicationController
 
   def get_current_user          #if session present? Will return the Current_user serialized data
+   
     if logged_in?
-        render json: current_user, serializer: UserSerializer   
+        render json: current_user, serializer: UserSerializer 
+          
     else
         render json: {error: "Please sign in below."}
     end
@@ -38,10 +40,13 @@ def get_token                   #request for the session[:token] information if 
 end
 
 def destroy        # logout process clear all session data.
-    session.clear
+    session[:user_id] = nil
+   
+    reset_session
     render json: {
         message: "You have logged out."
     }
+    
 end
 
 private

@@ -5,9 +5,10 @@ class ArtistsController < ApplicationController
         @user = User.find_by(name: params[:username])
         @artist.user_id = @user.id                                                             
         
-         if !@user.artists.all.find_by(artist_id: params[:id])
+         if !@user.artists.all.find_by(artist_id: params[:artist_id])
             @artist.save                                                           
             render json: @artist.to_json  
+            
         else
             resp = {
             error: "#{@artist.name} is Already a Fave!",
